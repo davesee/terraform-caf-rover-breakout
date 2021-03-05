@@ -20,7 +20,7 @@ Run the following commands using your Linux shell from the root of the project. 
     -a apply
 ```
 
-### Level 0 - Networking and Shared Services Landing Zones
+### Level 2 - Networking and Shared Services Landing Zones
 ```
 ./rover.sh -lz tf/caf/landingzones/landingzones/caf_networking \
     -var-folder ../../../configuration/dev/level2/networking \
