@@ -107,13 +107,13 @@ load_balancers = {
   }
 }
 
-resource "azurerm_network_interface_backend_address_pool_association" "GTWYVM01" {
-  network_interface_id    = "nic0"
-  ip_configuration_name   = "lb_pip1"
-  backend_address_pool_id = "address1"
+# resource "azurerm_network_interface_backend_address_pool_association" "GTWYVM01" {
+#   network_interface_id    = "nic0"
+#   ip_configuration_name   = "lb_pip1"
+#   backend_address_pool_id = "address1"
 
-  # depends_on = [azurerm_virtual_machine.GTWYVM01]
-}
+#   # depends_on = [azurerm_virtual_machine.GTWYVM01]
+# }
 
 
 # Virtual machines

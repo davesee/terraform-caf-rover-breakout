@@ -6,4 +6,5 @@ echo "Removing temp files"
     rm -rf tfstates
     rm -rf .vscode
 
-    find . -name "*terraform*" -exec rm -rf {} \;
+    find . -name  backend.azurerm.tf -delete
+    find . -name "*terraform*" -delete
