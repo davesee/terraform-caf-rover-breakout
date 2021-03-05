@@ -30,6 +30,9 @@ module "networking" {
     dns_zones                                               = var.dns_zones
     express_route_circuit_authorizations                    = var.express_route_circuit_authorizations
     express_route_circuits                                  = var.express_route_circuits
+    load_balancers                                          = var.load_balancers
+    load_balancer_rules                                     = var.load_balancer_rules
+    load_balancer_probe                                     = var.load_balancer_probe
     network_security_group_definition                       = var.network_security_group_definition
     private_dns                                             = var.private_dns
     private_endpoints                                       = var.private_endpoints

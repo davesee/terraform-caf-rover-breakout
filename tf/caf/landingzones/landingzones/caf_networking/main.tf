@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.43"
+      version = "~> 2.48"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -45,7 +45,6 @@ data "azurerm_client_config" "current" {}
 
 
 locals {
-
   # Update the tfstates map
   tfstates = merge(
     map(var.landingzone.key,

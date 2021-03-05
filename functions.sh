@@ -111,7 +111,6 @@ function verify_parameters {
         cd ${TF_DATA_DIR}
         pwd
         cd ${landingzone_name}
-        echo "basename of lz folder         : $(basename $(pwd))(.tfstate & .tfplan) vars"
         export TF_VAR_tf_name=${TF_VAR_tf_name:="$(basename $(pwd)).tfstate"}
         export TF_VAR_tf_plan=${TF_VAR_tf_plan:="$(basename $(pwd)).tfplan"}
 
@@ -202,8 +201,8 @@ function initialize_state {
 
     ls
 
-    sudo rm -f -- ${landingzone_name}/backend.azurerm.tf
-    # rm -f -- "${TF_DATA_DIR}/terraform.tfstate"
+    rm -f -- ${landingzone_name}/backend.azurerm.tf
+    rm -f -- "${TF_DATA_DIR}/terraform.tfstate"
 
     export TF_VAR_tf_name=${TF_VAR_tf_name:="$(basename $(pwd)).tfstate"}
     export TF_VAR_tf_plan=${TF_VAR_tf_plan:="$(basename $(pwd)).tfplan"}
@@ -255,10 +254,11 @@ function deploy_from_remote_state {
 
     echo 'Connecting to the launchpad'
 
+    pwd
     # cd ${landingzone_name}
 
     if [ -f "backend.azurerm" ]; then
-        sudo cp backend.azurerm backend.azurerm.tf
+        cp backend.azurerm backend.azurerm.tf
     fi
 
     login_as_launchpad
@@ -443,8 +443,6 @@ function plan {
 
     # export TF_LOG=${TF_LOG:="DEBUG"}
 
-    pwd
-
     terraform plan ${tf_command} \
         -refresh=true \
         -state="${TF_DATA_DIR}/tfstates/${TF_VAR_level}/${TF_VAR_workspace}/${TF_VAR_tf_name}" \
@@ -521,6 +519,7 @@ function destroy {
     echo " -TF_VAR_workspace: ${TF_VAR_workspace}"
     echo " -TF_VAR_tf_name: ${TF_VAR_tf_name}"
 
+    pwd
 
     rm -f "${TF_DATA_DIR}/terraform.tfstate"
     sudo rm -f ${landingzone_name}/backend.azurerm.tf
@@ -545,15 +544,15 @@ function destroy {
             -backend-config resource_group_name=${TF_VAR_tfstate_resource_group_name} \
             -backend-config container_name=${TF_VAR_workspace} \
             -backend-config key=${TF_VAR_tf_name} \
-            -backend-config subscription_id=${TF_VAR_tfstate_subscription_id} \
-            ${landingzone_name}
+            -backend-config subscription_id=${TF_VAR_tfstate_subscription_id} #\
+            # ${landingzone_name}
 
         RETURN_CODE=$? && echo "Line ${LINENO} - Terraform init return code ${RETURN_CODE}"
 
         terraform destroy \
             -refresh=false \
-            ${tf_command} \
-            ${landingzone_name}
+            ${tf_command} # \
+            # ${landingzone_name}
 
         RETURN_CODE=$?
         if [ $RETURN_CODE != 0 ]; then
@@ -710,8 +709,8 @@ function deploy_landingzone {
             ;;
     esac
 
-    # rm -f "${TF_DATA_DIR}/tfstates/${TF_VAR_level}/${TF_VAR_workspace}/${TF_VAR_tf_plan}"
-    # rm -f "${TF_DATA_DIR}/tfstates/${TF_VAR_level}/${TF_VAR_workspace}/${TF_VAR_tf_name}"
+    rm -f "${TF_DATA_DIR}/tfstates/${TF_VAR_level}/${TF_VAR_workspace}/${TF_VAR_tf_plan}"
+    rm -f "${TF_DATA_DIR}/tfstates/${TF_VAR_level}/${TF_VAR_workspace}/${TF_VAR_tf_name}"
 
     cd "${current_path}"
 }
@@ -834,7 +833,7 @@ function clean_up_variables {
 
     echo "clean_up backend_files"
     # find /tf/caf -name  backend.azurerm.tf -delete
-
+    find . -name  backend.azurerm.tf -delete
 }
 
 
@@ -925,7 +924,7 @@ function deploy {
         ;;
         '')
             error ${LINENO} "you must login to an Azure subscription first or logout / login again" 2
-            ;;
+        ;;
         *)
 
         # Get the launchpad version
@@ -946,6 +945,7 @@ function deploy {
             fi
             exit 0
         else
+            echo "Proceed with execution"
             case "${tf_action}" in
             "destroy")
                 destroy_from_remote_state

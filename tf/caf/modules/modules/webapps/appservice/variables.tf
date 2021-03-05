@@ -1,4 +1,6 @@
-
+variable client_config {
+  description = "Client configuration object (see module README.md)."
+}
 
 variable tags {
   description = "(Required) map of tags for the deployment"
@@ -31,10 +33,6 @@ variable app_settings {
   default = null
 }
 
-variable dynamic_app_settings {
-  default = {}
-}
-
 variable slots {
   default = {}
 }
@@ -45,8 +43,6 @@ variable application_insight {
 
 variable settings {}
 
-variable client_config {}
-
 variable global_settings {
   description = "Global settings object (see module README.md)"
 }
@@ -56,6 +52,6 @@ variable base_tags {
   type        = map
 }
 
-variable combined_objects {
+variable storage_accounts {
   default = {}
 }

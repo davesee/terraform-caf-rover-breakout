@@ -1,12 +1,12 @@
 output vnets {
   depends_on = [azurerm_virtual_network_peering.peering]
   value      = module.networking
-  
+
 }
 
 output public_ip_addresses {
-  value     = module.public_ip_addresses
-  
+  value = module.public_ip_addresses
+
 }
 
 
@@ -45,7 +45,7 @@ resource "azurecaf_name" "public_ip_addresses" {
 
   name          = try(each.value.name, null)
   resource_type = "azurerm_public_ip"
-  prefixes      = [local.global_settings.prefix]
+  prefixes      = local.global_settings.prefix
   random_length = local.global_settings.random_length
   clean_input   = true
   passthrough   = local.global_settings.passthrough
@@ -56,21 +56,23 @@ module public_ip_addresses {
   source   = "./modules/networking/public_ip_addresses"
   for_each = local.networking.public_ip_addresses
 
-  name                    = azurecaf_name.public_ip_addresses[each.key].result
-  resource_group_name     = module.resource_groups[each.value.resource_group_key].name
-  location                = lookup(each.value, "region", null) == null ? module.resource_groups[each.value.resource_group_key].location : local.global_settings.regions[each.value.region]
-  sku                     = try(each.value.sku, "Basic")
-  allocation_method       = try(each.value.allocation_method, "Dynamic")
-  ip_version              = try(each.value.ip_version, "IPv4")
-  idle_timeout_in_minutes = try(each.value.idle_timeout_in_minutes, null)
-  domain_name_label       = try(each.value.domain_name_label, null)
-  reverse_fqdn            = try(each.value.reverse_fqdn, null)
-  tags                    = try(each.value.tags, null)
-  zones                   = try(each.value.zones, null)
-  diagnostic_profiles     = try(each.value.diagnostic_profiles, {})
-  diagnostics             = local.combined_diagnostics
-  base_tags               = try(local.global_settings.inherit_tags, false) ? module.resource_groups[each.value.resource_group_key].tags : {}
+  name                       = azurecaf_name.public_ip_addresses[each.key].result
+  resource_group_name        = module.resource_groups[each.value.resource_group_key].name
+  location                   = lookup(each.value, "region", null) == null ? module.resource_groups[each.value.resource_group_key].location : local.global_settings.regions[each.value.region]
+  sku                        = try(each.value.sku, "Basic")
+  allocation_method          = try(each.value.allocation_method, "Dynamic")
+  ip_version                 = try(each.value.ip_version, "IPv4")
+  idle_timeout_in_minutes    = try(each.value.idle_timeout_in_minutes, null)
+  domain_name_label          = try(each.value.domain_name_label, null)
+  reverse_fqdn               = try(each.value.reverse_fqdn, null)
+  generate_domain_name_label = try(each.value.generate_domain_name_label, false)
+  tags                       = try(each.value.tags, null)
+  zones                      = try(each.value.zones, null)
+  diagnostic_profiles        = try(each.value.diagnostic_profiles, {})
+  diagnostics                = local.combined_diagnostics
+  base_tags                  = try(local.global_settings.inherit_tags, false) ? module.resource_groups[each.value.resource_group_key].tags : {}
 }
+
 
 #
 #
@@ -84,7 +86,7 @@ resource "azurecaf_name" "peering" {
 
   name          = try(each.value.name, "")
   resource_type = "azurerm_virtual_network_peering"
-  prefixes      = [local.global_settings.prefix]
+  prefixes      = local.global_settings.prefix
   random_length = local.global_settings.random_length
   clean_input   = true
   passthrough   = local.global_settings.passthrough
@@ -116,7 +118,7 @@ resource "azurecaf_name" "route_tables" {
 
   name          = try(each.value.name, null)
   resource_type = "azurerm_route_table"
-  prefixes      = [local.global_settings.prefix]
+  prefixes      = local.global_settings.prefix
   random_length = local.global_settings.random_length
   clean_input   = true
   passthrough   = local.global_settings.passthrough
@@ -140,7 +142,7 @@ resource "azurecaf_name" "routes" {
 
   name          = try(each.value.name, null)
   resource_type = "azurerm_route"
-  prefixes      = [local.global_settings.prefix]
+  prefixes      = local.global_settings.prefix
   random_length = local.global_settings.random_length
   clean_input   = true
   passthrough   = local.global_settings.passthrough
@@ -173,7 +175,7 @@ resource "azurecaf_name" "ddos_protection_plan" {
 
   name          = try(each.value.name, null)
   resource_type = "azurerm_network_ddos_protection_plan"
-  prefixes      = [local.global_settings.prefix]
+  prefixes      = local.global_settings.prefix
   random_length = local.global_settings.random_length
   clean_input   = true
   passthrough   = local.global_settings.passthrough

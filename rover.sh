@@ -9,10 +9,10 @@
 # source /tf/rover/functions.sh
 # source /tf/rover/banner.sh
 # source tfc.sh
-source clone.sh
+# source clone.sh
+# source banner.sh
+# source tfc.sh
 source functions.sh
-source banner.sh
-source tfc.sh
 
 # verify_rover_version
 
@@ -32,7 +32,7 @@ unset PARAMS
 
 current_path=$(pwd)
 
-mkdir -p ${TF_PLUGIN_CACHE_DIR}
+# mkdir -p ${TF_PLUGIN_CACHE_DIR}
 
 while (( "$#" )); do
     case "${1}" in
