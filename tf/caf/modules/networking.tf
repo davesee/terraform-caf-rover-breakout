@@ -1,10 +1,10 @@
-output vnets {
+output "vnets" {
   depends_on = [azurerm_virtual_network_peering.peering]
   value      = module.networking
 
 }
 
-output public_ip_addresses {
+output "public_ip_addresses" {
   value = module.public_ip_addresses
 
 }
@@ -52,7 +52,7 @@ resource "azurecaf_name" "public_ip_addresses" {
   use_slug      = local.global_settings.use_slug
 }
 
-module public_ip_addresses {
+module "public_ip_addresses" {
   source   = "./modules/networking/public_ip_addresses"
   for_each = local.networking.public_ip_addresses
 
@@ -72,7 +72,6 @@ module public_ip_addresses {
   diagnostics                = local.combined_diagnostics
   base_tags                  = try(local.global_settings.inherit_tags, false) ? module.resource_groups[each.value.resource_group_key].tags : {}
 }
-
 
 #
 #
@@ -206,4 +205,20 @@ module "network_watchers" {
   tags                = try(each.value.tags, null)
   base_tags           = try(local.global_settings.inherit_tags, false) ? module.resource_groups[each.value.resource_group_key].tags : {}
   global_settings     = local.global_settings
+}
+
+#
+#
+# Network Interface Backend Address Pool Assocation
+#
+#
+
+# load balancer to virtual machine nic association
+module "network_interface_backend_address_pool_association" {
+  source   = "./modules/networking/network_interface_backend_address_pool_association"
+  for_each = local.networking.network_interface_backend_address_pool_association
+
+  network_interface_id    = try(each.value.network_interface_id, null)
+  ip_configuration_name   = try(each.value.ip_configuration_name, null)
+  backend_address_pool_id = try(each.value.backend_address_pool_id, null)
 }

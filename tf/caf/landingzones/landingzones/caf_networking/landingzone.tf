@@ -33,6 +33,7 @@ module "networking" {
     load_balancers                                          = var.load_balancers
     load_balancer_rules                                     = var.load_balancer_rules
     load_balancer_probe                                     = var.load_balancer_probe
+    network_interface_backend_address_pool_association      = var.network_interface_backend_address_pool_association
     network_security_group_definition                       = var.network_security_group_definition
     private_dns                                             = var.private_dns
     private_endpoints                                       = var.private_endpoints

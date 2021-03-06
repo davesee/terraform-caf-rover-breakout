@@ -150,3 +150,6 @@ variable "load_balancer_rules" {
 variable "load_balancer_probe" {
   default = {}
 }
+variable "network_interface_backend_address_pool_association" {
+  default = {}
+}

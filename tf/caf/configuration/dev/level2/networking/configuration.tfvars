@@ -107,14 +107,6 @@ load_balancers = {
   }
 }
 
-# resource "azurerm_network_interface_backend_address_pool_association" "GTWYVM01" {
-#   network_interface_id    = "nic0"
-#   ip_configuration_name   = "lb_pip1"
-#   backend_address_pool_id = "address1"
-
-#   # depends_on = [azurerm_virtual_machine.GTWYVM01]
-# }
-
 
 # Virtual machines
 virtual_machines = {
@@ -173,6 +165,23 @@ virtual_machines = {
 
   }
 }
+
+# resource "azurerm_network_interface_backend_address_pool_association" "gtwvm1_lbpool" {
+#   network_interface_id    = module.compute.virtual_machines.vm1.nic0
+#   ip_configuration_name   = module.networking.public_ip_addresses.lb_pip
+#   backend_address_pool_id = module.networking.load_balancers.lb_pip.backend_address_pool_addresses.address1
+
+#   depends_on = [modules.compute.virtual_machines.vm1]
+# }
+
+network_interface_backend_address_pool_association = {
+  bpa1 = {
+    network_interface_id    = "nic0"
+    ip_configuration_name   = "lb_pip"
+    backend_address_pool_id = "address1"
+  }
+}
+
 
 diagnostic_storage_accounts = {
   # Stores boot diagnostic for region1
