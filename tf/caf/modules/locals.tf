@@ -69,6 +69,7 @@ locals {
     express_route_circuits                                  = try(var.networking.express_route_circuits, {})
     front_door_waf_policies                                 = try(var.networking.front_door_waf_policies, {})
     front_doors                                             = try(var.networking.front_doors, {})
+    network_interface_backend_address_pool_association      = try(var.networking.network_interface_backend_address_pool_association, {})
     local_network_gateways                                  = try(var.networking.local_network_gateways, {})
     network_security_group_definition                       = try(var.networking.network_security_group_definition, {})
     network_watchers                                        = try(var.networking.network_watchers, {})
